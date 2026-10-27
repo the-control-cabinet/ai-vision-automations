@@ -1,0 +1,31 @@
+# Generative-AI image check of an outdoor camera snapshot (Home Assistant AI Task).
+# Runs every 15 min in daylight; stores the result in a helper used by the rain warnings.
+alias: Outdoor AI camera check - washing line
+triggers:
+  - trigger: time_pattern
+    minutes: "/15"
+conditions:
+  - condition: sun
+    after: sunrise
+    before: sunset
+actions:
+  - action: ai_task.generate_data
+    data:
+      task_name: washing_check
+      instructions: >-
+        Does this image show laundry or clothes hanging on a washing line?
+        Answer only 'yes' or 'no'.
+      attachments:
+        media_content_id: media-source://camera/camera.outdoor_camera   # your camera entity
+        media_content_type: image/jpeg
+    response_variable: ai_result
+  - if:
+      - condition: template
+        value_template: "{{ 'yes' in ai_result.data | lower }}"
+    then:
+      - action: input_boolean.turn_on
+        target: {entity_id: input_boolean.washing_on_line}
+    else:
+      - action: input_boolean.turn_off
+        target: {entity_id: input_boolean.washing_on_line}
+mode: single

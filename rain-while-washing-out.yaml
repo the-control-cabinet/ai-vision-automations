@@ -1,0 +1,16 @@
+alias: Rain warning while washing is out
+triggers:
+  - trigger: numeric_state
+    entity_id: sensor.rain_rate        # any rain sensor / consolidated rain entity
+    above: 0.2
+conditions:
+  - condition: state
+    entity_id: input_boolean.washing_on_line
+    state: "on"
+actions:
+  - action: notify.send_message
+    target: {entity_id: notify.your_phone}
+    data:
+      title: Rain - washing is out
+      message: Rain detected and the washing is still on the line.
+mode: single

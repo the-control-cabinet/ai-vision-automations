@@ -1,0 +1,6 @@
+use_case,input,method,output,status
+Washing line check,Outdoor camera snapshot,Cloud generative-AI image task (yes/no),Helper -> rain warning,Live
+Driveway/outdoor check,Outdoor camera snapshot,Same pattern,Notification,Live (combined check)
+Boiler pressure gauge reading,Camera on the analogue gauge,AI image task or local gauge reader,Pressure value,Superseded by a transducer
+Bird feeder species,Window feeder camera,Local detection (Frigate) + AI species ID,Species alerts,Planned
+Local NVR / object detection,RTSP/ONVIF cameras,Frigate on the head-end,Events,Planned
